@@ -16,6 +16,8 @@ pub enum Command {
     Curriculum(String),
     #[command(description = "generate a pix qr-code. Example: name, pix_key, value, city, txt_id.", parse_with = "split")]
     Pix(String, String, String),
+    #[command(description = "qr code to donate 1 reall.")]
+    Donate,
 }
 
 pub async fn answer(bot: Bot, msg: Message, cmd: Command) -> ResponseResult<()> {
@@ -60,6 +62,9 @@ pub async fn answer(bot: Bot, msg: Message, cmd: Command) -> ResponseResult<()> 
             
             fs::remove_file("./temp_files/out.png")?;
         },
+        Command::Donate => {
+            bot.send_document(msg.chat.id, InputFile::file("./temp_files/donate.png")).await?;
+        }
     };
 
     Ok(())
